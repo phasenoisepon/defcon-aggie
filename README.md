@@ -13,4 +13,7 @@ Challenge Information:
 - ESP could also have 'baby's first RE challenge on the SPIFFS (think it's like 32 MB max??)
 - so serve an ELF or other file
 - SSTV wav?
-- "You know an Aggie by their Ring, by their (honor code), or by someone who wears Maroon and is always quick to say 'Howdy!'
+- "You know an Aggie by their Ring, by their (honor code), or by someone who wears Maroon and is always quick to say 'Howdy!' "
+
+- Could also have the beacon spammer running but that one is less fun than something in the spirit of DefCon
+
