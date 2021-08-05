@@ -12,13 +12,20 @@ String responseHTML = ""
   "be redirected here.</p></body></html>";
 
 void setup() { 
+  
+  Serial.begin(115200);
+  Serial.println();
+  Serial.println("Configuring access point...");
+  
   WiFi.mode(WIFI_AP);
   WiFi.softAP("ESP32-DNSServer");
   WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
+  
 
   // if DNSServer is started with "*" for domain name, it will reply with
   // provided IP to all DNS request
   dnsServer.start(DNS_PORT, "*", apIP);
+  Serial.println("Configuring DNS Server on port"+String(DNS_PORT));
 
   server.begin();
 }
