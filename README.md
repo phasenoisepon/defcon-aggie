@@ -17,3 +17,12 @@ Challenge Information:
 
 - Could also have the beacon spammer running but that one is less fun than something in the spirit of DefCon
 
+
+
+**Setup**
+- `sudo ln -s /usr/bin/python3 /usr/bin/python` since the esp32 libraries want python in the path
+- `sudo apt install python3-pip` to install pip3
+- `pip install pyserial` since esp32 libs use pyserial ('import serial')
+
+
+
