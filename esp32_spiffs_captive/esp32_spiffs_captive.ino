@@ -42,11 +42,6 @@ void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
 DNSServer dnsServer;
 AsyncWebServer server(80);
 
-String user_name;
-String proficiency;
-bool name_received = false;
-bool proficiency_received = false;
-
 class CaptiveRequestHandler : public AsyncWebHandler {
 public:
   CaptiveRequestHandler() {}
@@ -58,38 +53,28 @@ public:
   }
 
   void handleRequest(AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/captive.html","text/html", false); 
+    request->send(SPIFFS, "/challenge1.html","text/html", false); 
+    Serial.println("other dec /challenge1.html");
   }
 };
 
 void setupServer(){
-  String index = "index.html";
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-      request->send(SPIFFS, "/captive.html","text/html", false); 
-      Serial.println("Client Connected");
-  });
-    
-  server.on("/get", HTTP_GET, [] (AsyncWebServerRequest *request) {
-      String inputMessage;
-      String inputParam;
-  
-      if (request->hasParam("name")) {
-        inputMessage = request->getParam("name")->value();
-        inputParam = "name";
-        user_name = inputMessage;
-        Serial.println(inputMessage);
-        name_received = true;
-      }
 
-      if (request->hasParam("proficiency")) {
-        inputMessage = request->getParam("proficiency")->value();
-        inputParam = "proficiency";
-        proficiency = inputMessage;
-        Serial.println(inputMessage);
-        proficiency_received = true;
-      }
-      request->send(200, "text/html", "The values entered by you have been successfully sent to the device <br><a href=\"/\">Return to Home Page</a>");
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+      request->send(SPIFFS, "/challenge1.html","text/html", false); 
+      Serial.println("/challenge1.html");
   });
+
+  server.on("/cybersec.jpg", HTTP_GET, [](AsyncWebServerRequest *request){
+      request->send(SPIFFS, "/cybersec.jpg","image/jpeg", false); 
+      Serial.println("/cybersec.jpg requested");
+  });
+
+  server.on("/rev.mp3", HTTP_GET, [](AsyncWebServerRequest *request){
+      request->send(SPIFFS, "/rev.mp3","audio/mpeg", false); 
+      Serial.println("/rev.mp3 requested");
+  });
+
 }
 
 
@@ -121,11 +106,4 @@ void setup(){
 
 void loop(){
   dnsServer.processNextRequest();
-  if(name_received && proficiency_received){
-      Serial.print("Hello ");Serial.println(user_name);
-      Serial.print("You have stated your proficiency to be ");Serial.println(proficiency);
-      name_received = false;
-      proficiency_received = false;
-      Serial.println("We'll wait for the next client now");
-    }
 }
