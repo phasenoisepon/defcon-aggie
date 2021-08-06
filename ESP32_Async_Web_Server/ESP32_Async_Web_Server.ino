@@ -63,7 +63,7 @@ void setup(){
   // Print ESP32 Local IP Address
   Serial.println(WiFi.localIP());
   */
-  /*
+  
   Serial.println();
   Serial.println("Configuring access point...");
   WiFi.mode(WIFI_AP);
@@ -74,7 +74,7 @@ void setup(){
   // provided IP to all DNS request
   dnsServer.start(DNS_PORT, "*", apIP);
   Serial.println("Configuring DNS Server on port"+String(DNS_PORT));
-  */
+  
   // Route for root / web page
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(SPIFFS, "/index.html", String(), false, processor);
