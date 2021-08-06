@@ -63,6 +63,7 @@ public:
 };
 
 void setupServer(){
+  String index = "index.html";
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
       request->send(SPIFFS, "/captive.html","text/html", false); 
       Serial.println("Client Connected");
@@ -106,7 +107,7 @@ void setup(){
   Serial.println();
   Serial.println("Setting up AP Mode");
   WiFi.mode(WIFI_AP); 
-  WiFi.softAP("esp-captive");
+  WiFi.softAP("Aggie Challenge #1");
   Serial.print("AP IP address: ");Serial.println(WiFi.softAPIP());
   Serial.println("Setting up Async WebServer");
   setupServer();
