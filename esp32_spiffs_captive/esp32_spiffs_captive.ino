@@ -41,6 +41,10 @@ void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
 
 DNSServer dnsServer;
 AsyncWebServer server(80);
+unsigned long currentMillis;
+const unsigned long period = 1000;
+const byte ledPin = 13;
+unsigned long startMillis;
 
 class CaptiveRequestHandler : public AsyncWebHandler {
 public:
@@ -53,7 +57,7 @@ public:
   }
 
   void handleRequest(AsyncWebServerRequest *request) {
-    Serial.println(request->url());
+    Serial.println("Request for "+request->url());
     if (request->url() == "/cybersec.jpg") {
       request->send(SPIFFS, "/cybersec.jpg","image/jpeg", false);
     } else if (request->url() == "/rev.mp3") {
@@ -71,6 +75,9 @@ void setup(){
     Serial.println("An Error has occurred while mounting SPIFFS");
     return;
   }
+
+  //setup led pin
+  pinMode(ledPin, OUTPUT);
   
   //List contents of SPIFFS
   listDir(SPIFFS, "/", 0);
@@ -86,8 +93,15 @@ void setup(){
   //more handlers...
   server.begin();
   Serial.println("All Done!");
+
+  startMillis = millis();
 }
 
 void loop(){
   dnsServer.processNextRequest();
+  currentMillis = millis();
+  if(currentMillis - startMillis >= period){
+    digitalWrite(ledPin, !digitalRead(ledPin));
+    startMillis = currentMillis;
+  }
 }
