@@ -53,30 +53,16 @@ public:
   }
 
   void handleRequest(AsyncWebServerRequest *request) {
-    request->send(SPIFFS, "/challenge1.html","text/html", false); 
-    Serial.println("other dec /challenge1.html");
+    Serial.println(request->url());
+    if (request->url() == "/cybersec.jpg") {
+      request->send(SPIFFS, "/cybersec.jpg","image/jpeg", false);
+    } else if (request->url() == "/rev.mp3") {
+      request->send(SPIFFS, "/rev.mp3","audio/mpeg", false); 
+    } else {
+      request->send(SPIFFS, "/challenge1.html","text/html", false); 
+    }
   }
 };
-
-void setupServer(){
-
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-      request->send(SPIFFS, "/challenge1.html","text/html", false); 
-      Serial.println("/challenge1.html");
-  });
-
-  server.on("/cybersec.jpg", HTTP_GET, [](AsyncWebServerRequest *request){
-      request->send(SPIFFS, "/cybersec.jpg","image/jpeg", false); 
-      Serial.println("/cybersec.jpg requested");
-  });
-
-  server.on("/rev.mp3", HTTP_GET, [](AsyncWebServerRequest *request){
-      request->send(SPIFFS, "/rev.mp3","audio/mpeg", false); 
-      Serial.println("/rev.mp3 requested");
-  });
-
-}
-
 
 void setup(){
   //your other setup stuff...
@@ -94,8 +80,6 @@ void setup(){
   WiFi.mode(WIFI_AP); 
   WiFi.softAP("Aggie Challenge #1");
   Serial.print("AP IP address: ");Serial.println(WiFi.softAPIP());
-  Serial.println("Setting up Async WebServer");
-  setupServer();
   Serial.println("Starting DNS Server");
   dnsServer.start(53, "*", WiFi.softAPIP());
   server.addHandler(new CaptiveRequestHandler()).setFilter(ON_AP_FILTER);//only when requested from AP
