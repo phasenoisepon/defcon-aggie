@@ -24,5 +24,8 @@ Challenge Information:
 - `sudo apt install python3-pip` to install pip3
 - `pip install pyserial` since esp32 libs use pyserial ('import serial')
 
+-----
 
 
+
+ - following https://iotespresso.com/esp32-captive-portal-fetching-html-from-spiffs/
