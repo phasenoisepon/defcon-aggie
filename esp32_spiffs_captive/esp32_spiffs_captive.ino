@@ -43,7 +43,7 @@ DNSServer dnsServer;
 AsyncWebServer server(80);
 unsigned long currentMillis;
 const unsigned long period = 1000;
-const byte ledPin = 13;
+const byte ledPin = LED_BUILTIN;
 unsigned long startMillis;
 
 class CaptiveRequestHandler : public AsyncWebHandler {
@@ -62,6 +62,8 @@ public:
       request->send(SPIFFS, "/cybersec.jpg","image/jpeg", false);
     } else if (request->url() == "/rev.mp3") {
       request->send(SPIFFS, "/rev.mp3","audio/mpeg", false); 
+    }else if (request->url() == "/pride_rev.png") {
+      request->send(SPIFFS, "pride_rev.png","image/jpeg", false); 
     } else {
       request->send(SPIFFS, "/challenge1.html","text/html", false); 
     }
@@ -78,7 +80,7 @@ void setup(){
 
   //setup led pin
   pinMode(ledPin, OUTPUT);
-  
+  digitalWrite(ledPin, HIGH);
   //List contents of SPIFFS
   listDir(SPIFFS, "/", 0);
 
@@ -95,13 +97,17 @@ void setup(){
   Serial.println("All Done!");
 
   startMillis = millis();
+  digitalWrite(ledPin, LOW);
 }
 
 void loop(){
-  dnsServer.processNextRequest();
   currentMillis = millis();
   if(currentMillis - startMillis >= period){
     digitalWrite(ledPin, !digitalRead(ledPin));
     startMillis = currentMillis;
+    Serial.println("timer: "+millis());
   }
+  
+  dnsServer.processNextRequest();
+
 }
